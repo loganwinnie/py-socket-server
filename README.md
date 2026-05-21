@@ -14,13 +14,14 @@ The TCP layer is working, the server is accepting connections and echoes bytes b
 - Clean shutdown on client close
 
 ## Run it
-
+```bash
 python main.py
+```
 
 ## Test it
-
-nc localhost 8080
-hello <-- Any message
+```bash
+nc localhost 8080 
+hello <-- Any message 
 hello <-- message echoed back
-
+```
 
