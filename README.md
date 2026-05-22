@@ -4,7 +4,7 @@ A from scratch HTTP/1.1 server built from scratch in Python using only the stand
 
 ## Status
  
-Server now parses HTTP requests and serves valid response.
+Server now parses HTTP requests and serves valid response with routing, status codes, and error handling.
 
 ## What works today
 
@@ -13,6 +13,8 @@ Server now parses HTTP requests and serves valid response.
 - 60-second idle timeout.
 - Clean shutdown on client close.
 - Server parses HTTP requests and serves valid response.
+- Super basic routing and error handling. 
+- Handles request and serves robust response
 
 ## Run it
 ```bash
