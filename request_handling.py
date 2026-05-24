@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
+import time
 
 PUBLIC_DIR = Path("public")
 
@@ -71,13 +72,16 @@ def build_response(
     status_text: str,
     body: str | bytes,
     content_type: str = "text/html",
+    keep_alive: bool = True,
 ) -> bytes:
     body_bytes = body.encode() if isinstance(body, str) else body
+    connection_value = "keep-alive" if keep_alive else "close"
 
     head = (
         f"HTTP/1.1 {status_code} {status_text}\r\n"
         f"Content-Type: {content_type}\r\n"
         f"Content-Length: {len(body_bytes)}\r\n"
+        f"Connection: {connection_value}\r\n"
         "\r\n"
     )
     return head.encode() + body_bytes
@@ -115,22 +119,26 @@ def handle_not_found() -> bytes:
     return build_response(404, "Not Found", "<h1>404 Not Found</h1>")
 
 
-def handle_request(data: bytes) -> bytes:
+def handle_request(data: bytes) -> tuple[bytes, bool]:
     """Dispatch request to handler that can serve the request"""
 
     request = parse_request(data)
-
+    connection = request.headers.get("connection", "").lower()
+    keep_alive = connection != "close"
     if request.method != "GET":
-        return build_response(
-            405, "Method Not Allowed", f"<h1>405 Method Not Allowed</h1>"
+        return (
+            build_response(
+                405, "Method Not Allowed", f"<h1>405 Method Not Allowed</h1>"
+            ),
+            keep_alive,
         )
 
     response = handle_routes(request)
     if response is not None:
-        return response
+        return (response, keep_alive)
 
     response = handle_file_path(request)
     if response is not None:
-        return response
+        return (response, keep_alive)
 
-    return handle_not_found()
+    return (handle_not_found(), keep_alive)

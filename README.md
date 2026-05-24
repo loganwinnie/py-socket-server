@@ -8,14 +8,13 @@ Server now parses HTTP requests and serves valid response with routing, static f
 
 ## What works today
 
-- Single-client TCP server on a configurable port.
-- Graceful handling of client disconnects.
-- 60-second idle timeout.
-- Clean shutdown on client close.
-- Server parses HTTP requests and serves valid response.
-- Super basic routing and error handling. 
-- Handles request and serves robust response.
-- Serves static files.
+- A from-scratch HTTP/1.1 server
+- Routing, status codes, content-type detection
+- Static file serving with path-traversal protection
+- HTTP Keep-Alive (one TCP connection, many requests)
+- Asyncio-based concurrency (one thread, many simultaneous clients)
+- An event-driven I/O model you can articulate
+- 
 
 ## Run it
 ```bash
