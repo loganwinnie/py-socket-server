@@ -3,8 +3,6 @@
  An HTTP/1.1 server built from scratch in Python no `http.server`, no frameworks.
  Just the `socket` layer, `asyncio`, and the standard library.
 
- It started as a build to understand project. 
-
  ## Why
 
  `http.server` hands you a working server and hides the interesting parts. pysock
